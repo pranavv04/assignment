@@ -18,7 +18,7 @@ const Userpage = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/user/${username}`);
+        const response = await fetch(`https://assignment-e4rs.onrender.com/user/${username}`);
         
         if (!response.ok) throw new Error('Failed to fetch user details');
         
@@ -54,7 +54,7 @@ const Userpage = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:4000/user/${userId}`, {  // Use userId for updating
+      const response = await fetch(`https://assignment-e4rs.onrender.com/user/${userId}`, {  // Use userId for updating
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -71,7 +71,7 @@ const Userpage = () => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       try {
-        const response = await fetch(`http://localhost:4000/user/${userId}`, { method: 'DELETE' }); // Use userId for deleting
+        const response = await fetch(`https://assignment-e4rs.onrender.com/user/${userId}`, { method: 'DELETE' }); // Use userId for deleting
         if (!response.ok) throw new Error('Failed to delete account');
 
         toast.success('Account deleted successfully');
