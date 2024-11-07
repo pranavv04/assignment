@@ -66,24 +66,41 @@ router.get('/:name' , async(req,res)=>{
     }
 })
 
-router.put('/:id' , async(req,res)=>{
-    try {
-        const userId = req.params.id;
-        const updatedUser = req.body;
-        const response = await User.findByIdAndUpdate(userId, updatedUser,{
-            new:true,
-            runValidators:true
-        });
-        if(!response){
-            return res.status(404).json({error: 'Failed to update user data'})
-        }
-        console.log('User data updated')
-        res.status(200).json(response)
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Internal server error' });
+const bcrypt = require('bcryptjs');
+
+router.put('/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const updatedUser = { ...req.body };
+
+    // Check if a new password is provided
+    if (updatedUser.password) {
+      // Hash the new password
+      const salt = await bcrypt.genSalt(10);
+      updatedUser.password = await bcrypt.hash(updatedUser.password, salt);
+    } else {
+      // Remove password from the update if it's empty or not provided
+      delete updatedUser.password;
     }
-})
+
+    // Perform the update with the hashed password if present
+    const response = await User.findByIdAndUpdate(userId, updatedUser, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!response) {
+      return res.status(404).json({ error: 'Failed to update user data' });
+    }
+
+    console.log('User data updated');
+    res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 
 

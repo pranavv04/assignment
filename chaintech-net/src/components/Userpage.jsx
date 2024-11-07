@@ -71,7 +71,7 @@ const Userpage = () => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       try {
-        const response = await fetch(`https://assignment-e4rs.onrender.com/user/${userId}`, { method: 'DELETE' }); // Use userId for deleting
+        const response = await fetch(`https://assignment-e4rs.onrender.com/user/${userId}`, { method: 'DELETE' }); 
         if (!response.ok) throw new Error('Failed to delete account');
 
         toast.success('Account deleted successfully');
